@@ -55,6 +55,8 @@ public class TrainSplineFollower : MonoBehaviour
     }
 
     public float GetCurrentSpeed() => currentSpeed;
+    
+    public float GetDistanceTraveled() => distanceTraveled;
 
     public float GetProgress01() => distanceTraveled / splineLength;
 }

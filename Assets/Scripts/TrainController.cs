@@ -10,7 +10,6 @@ public class TrainController : MonoBehaviour
 
     private InputActions controls;
     [SerializeField] private float currentSpeed = 0f;
-    [SerializeField] private float currentAcceleration = 0f;
     [SerializeField] private float inputValue = 0f;
 
     private void Awake()
@@ -37,9 +36,7 @@ public class TrainController : MonoBehaviour
 
     private void Update()
     {
-        currentAcceleration += inputValue * accelerationRate * Time.deltaTime;
-        
-        currentSpeed += currentAcceleration * Time.deltaTime;
+        currentSpeed += inputValue * accelerationRate * Time.deltaTime;
         
         currentSpeed = Mathf.Clamp(currentSpeed, minSpeed, maxSpeed);
         trainSplineFollower.SetSpeed(currentSpeed);
