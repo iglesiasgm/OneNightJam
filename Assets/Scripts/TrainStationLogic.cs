@@ -216,4 +216,50 @@ public class TrainStationLogic : MonoBehaviour
                 StationPassengerSpawner
             >();
     }
+
+    public string GetNextStationName()
+    {
+        if (
+            stationManager == null ||
+            currentStationIndex < 0 ||
+            currentStationIndex >= stationManager.Stations.Count
+        )
+        {
+            return "Fin de línea";
+        }
+
+        return stationManager
+            .Stations[currentStationIndex]
+            .transform.name;
+    }
+
+    public float GetDistanceToNextStation()
+    {
+        if (
+            stationManager == null ||
+            follower == null ||
+            currentStationIndex < 0 ||
+            currentStationIndex >= stationManager.Stations.Count
+        )
+        {
+            return 0f;
+        }
+
+        StationManager.Station nextStation =
+            stationManager.Stations[
+                currentStationIndex
+            ];
+
+        float traveled =
+            follower.GetDistanceTraveled();
+
+        float remainingDistance =
+            nextStation.startDistance -
+            traveled;
+
+        return Mathf.Max(
+            0f,
+            remainingDistance
+        );
+    }
 }

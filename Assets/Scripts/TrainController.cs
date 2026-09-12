@@ -11,6 +11,7 @@ public class TrainController : MonoBehaviour
     private InputActions controls;
     [SerializeField] private float currentSpeed = 0f;
     [SerializeField] private float inputValue = 0f;
+    [SerializeField] private float currentAcceleration = 0f;
 
     private void OnEnable()
     {
@@ -27,17 +28,43 @@ public class TrainController : MonoBehaviour
     {
         inputValue = ctx.ReadValue<float>();
     }
-
     private void Update()
     {
+        float previousSpeed = currentSpeed;
+
         currentSpeed += inputValue * accelerationRate * Time.deltaTime;
-        
-        currentSpeed = Mathf.Clamp(currentSpeed, minSpeed, maxSpeed);
+
+        currentSpeed = Mathf.Clamp(
+            currentSpeed,
+            minSpeed,
+            maxSpeed
+        );
+
+        if (Time.deltaTime > 0f)
+        {
+            currentAcceleration =
+                (currentSpeed - previousSpeed) /
+                Time.deltaTime;
+        }
+        else
+        {
+            currentAcceleration = 0f;
+        }
+
         trainSplineFollower.SetSpeed(currentSpeed);
     }
-
     public void SetControls(InputActions controls)
     {
         this.controls = controls;
+    }
+
+    public float GetCurrentSpeed()
+    {
+        return currentSpeed;
+    }
+
+    public float GetCurrentAcceleration()
+    {
+        return currentAcceleration;
     }
 }
