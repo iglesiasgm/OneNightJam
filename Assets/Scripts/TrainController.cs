@@ -12,14 +12,8 @@ public class TrainController : MonoBehaviour
     [SerializeField] private float currentSpeed = 0f;
     [SerializeField] private float inputValue = 0f;
 
-    private void Awake()
-    {
-        controls = new InputActions();
-    }
-
     private void OnEnable()
     {
-        controls.Enable();
         controls.Player.Acceleration.performed += OnAcceleration;
         controls.Player.Acceleration.canceled += OnAcceleration;
     }
@@ -40,5 +34,10 @@ public class TrainController : MonoBehaviour
         
         currentSpeed = Mathf.Clamp(currentSpeed, minSpeed, maxSpeed);
         trainSplineFollower.SetSpeed(currentSpeed);
+    }
+
+    public void SetControls(InputActions controls)
+    {
+        this.controls = controls;
     }
 }
