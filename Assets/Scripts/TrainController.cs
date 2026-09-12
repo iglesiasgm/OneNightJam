@@ -1,0 +1,47 @@
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class TrainController : MonoBehaviour
+{
+    [SerializeField] private TrainSplineFollower trainSplineFollower;
+    [SerializeField] private float accelerationRate = 5f;
+    [SerializeField] private float maxSpeed = 20f;
+    [SerializeField] private float minSpeed = 0f;
+
+    private InputActions controls;
+    [SerializeField] private float currentSpeed = 0f;
+    [SerializeField] private float currentAcceleration = 0f;
+    [SerializeField] private float inputValue = 0f;
+
+    private void Awake()
+    {
+        controls = new InputActions();
+    }
+
+    private void OnEnable()
+    {
+        controls.Enable();
+        controls.Player.Acceleration.performed += OnAcceleration;
+        controls.Player.Acceleration.canceled += OnAcceleration;
+    }
+
+    private void OnDisable()
+    {
+        controls.Disable();
+    }
+    
+    private void OnAcceleration(InputAction.CallbackContext ctx)
+    {
+        inputValue = ctx.ReadValue<float>();
+    }
+
+    private void Update()
+    {
+        currentAcceleration += inputValue * accelerationRate * Time.deltaTime;
+        
+        currentSpeed += currentAcceleration * Time.deltaTime;
+        
+        currentSpeed = Mathf.Clamp(currentSpeed, minSpeed, maxSpeed);
+        trainSplineFollower.SetSpeed(currentSpeed);
+    }
+}
