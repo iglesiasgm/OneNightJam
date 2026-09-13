@@ -33,7 +33,9 @@ public class GameManager : MonoBehaviour
 
         controls.Enable();
     }
-
+    /// <summary>
+    /// Métodos de GameOver para diferentes condiciones de derrota
+    /// </summary>
     public void GameOverMissedStation()
     {
         StartGameOver(
@@ -74,6 +76,8 @@ public class GameManager : MonoBehaviour
             delay
         );
     }
+
+    /////////////////////////////
 }
 
 public enum GameState
