@@ -67,4 +67,12 @@ public class TrainController : MonoBehaviour
     {
         return currentAcceleration;
     }
+
+    public void StopTrain()
+    {
+        inputValue = 0f;
+        currentSpeed = 0f;
+
+        trainSplineFollower.SetSpeed(0f);
+    }
 }

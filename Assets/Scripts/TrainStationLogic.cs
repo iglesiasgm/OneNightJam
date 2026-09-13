@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class TrainStationLogic : MonoBehaviour
 {
+    [Header("Game")]
+    [SerializeField] private GameManager gameManager;
+
     [Header("Train")]
     [SerializeField] private TrainSplineFollower follower;
 
@@ -109,9 +112,7 @@ public class TrainStationLogic : MonoBehaviour
             spawner.ClearPassengersImmediate();
         }
 
-        currentStationIndex++;
-
-        PrepareCurrentTargetStation();
+        gameManager.GameOverMissedStation();
     }
 
     private IEnumerator OnStationReachedSuccessfully(
