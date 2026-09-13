@@ -31,8 +31,8 @@ public class StationPassengerSpawner : MonoBehaviour
     [SerializeField] private float passengerHalfHeight = 0.9f;
 
     [Header("Boarding animation")]
-    [SerializeField] private float boardingDuration = 0.8f;
-    [SerializeField] private float maxBoardingDelay = 0.25f;
+    [SerializeField] private float boardingDurationPerPassenger = 0.5f;
+   
 
     private readonly List<GameObject> spawnedPassengers =
         new List<GameObject>();
@@ -81,66 +81,7 @@ public class StationPassengerSpawner : MonoBehaviour
         );
     }
 
-    public IEnumerator BoardAllPassengers(
-        Transform boardingTarget
-    )
-    {
-        if (boardingTarget == null)
-        {
-            Debug.LogError(
-                $"{name}: Boarding Target es null."
-            );
-
-            yield break;
-        }
-
-        if (spawnedPassengers.Count == 0)
-        {
-            yield break;
-        }
-
-        List<GameObject> passengers =
-            new List<GameObject>(
-                spawnedPassengers
-            );
-
-        spawnedPassengers.Clear();
-
-        int passengersRemaining =
-            passengers.Count;
-
-        foreach (GameObject passenger in passengers)
-        {
-            if (passenger == null)
-            {
-                passengersRemaining--;
-                continue;
-            }
-
-            float randomDelay =
-                Random.Range(
-                    0f,
-                    maxBoardingDelay
-                );
-
-            StartCoroutine(
-                MovePassengerToTrain(
-                    passenger,
-                    boardingTarget,
-                    randomDelay,
-                    () =>
-                    {
-                        passengersRemaining--;
-                    }
-                )
-            );
-        }
-
-        while (passengersRemaining > 0)
-        {
-            yield return null;
-        }
-    }
+    
 
     public void ClearPassengersImmediate()
     {
@@ -161,23 +102,36 @@ public class StationPassengerSpawner : MonoBehaviour
         spawnedPassengers.Clear();
     }
 
-    private IEnumerator MovePassengerToTrain(
-        GameObject passenger,
-        Transform boardingTarget,
-        float delay,
-        Action onFinished
-    )
+    public IEnumerator BoardOnePassenger(
+    Transform boardingTarget,
+    Func<bool> canContinueBoarding,
+    Action<bool> onFinished
+)
     {
-        if (delay > 0f)
+        if (boardingTarget == null)
         {
-            yield return new WaitForSeconds(
-                delay
+            Debug.LogError(
+                $"{name}: Boarding Target es null."
             );
+
+            onFinished?.Invoke(false);
+            yield break;
         }
+
+        if (spawnedPassengers.Count == 0)
+        {
+            onFinished?.Invoke(false);
+            yield break;
+        }
+
+        GameObject passenger =
+            spawnedPassengers[0];
 
         if (passenger == null)
         {
-            onFinished?.Invoke();
+            spawnedPassengers.RemoveAt(0);
+
+            onFinished?.Invoke(true);
             yield break;
         }
 
@@ -192,14 +146,32 @@ public class StationPassengerSpawner : MonoBehaviour
         float duration =
             Mathf.Max(
                 0.01f,
-                boardingDuration
+                boardingDurationPerPassenger
             );
 
-        while (
-            elapsed < duration &&
-            passenger != null
-        )
+        while (elapsed < duration)
         {
+            if (passenger == null)
+            {
+                onFinished?.Invoke(false);
+                yield break;
+            }
+
+            if (
+                canContinueBoarding != null &&
+                !canContinueBoarding()
+            )
+            {
+                passenger.transform.position =
+                    startPosition;
+
+                passenger.transform.localScale =
+                    startScale;
+
+                onFinished?.Invoke(false);
+                yield break;
+            }
+
             float t =
                 elapsed / duration;
 
@@ -229,12 +201,13 @@ public class StationPassengerSpawner : MonoBehaviour
             yield return null;
         }
 
-        if (passenger != null)
-        {
-            Destroy(passenger);
-        }
+        spawnedPassengers.Remove(
+            passenger
+        );
 
-        onFinished?.Invoke();
+        Destroy(passenger);
+
+        onFinished?.Invoke(true);
     }
 
     private int CalculatePassengerAmount(

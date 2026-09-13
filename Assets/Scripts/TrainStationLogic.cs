@@ -28,7 +28,8 @@ public class TrainStationLogic : MonoBehaviour
 
     private int currentStationIndex = 0;
 
-    private bool processingStation = false;
+    private bool boardingProcessActive = false;
+    private bool gameOverTriggered = false;
 
     private void Start()
     {
@@ -46,7 +47,7 @@ public class TrainStationLogic : MonoBehaviour
 
     private void Update()
     {
-        if (processingStation)
+        if (gameOverTriggered)
             return;
 
         if (
@@ -66,22 +67,10 @@ public class TrainStationLogic : MonoBehaviour
             follower.GetDistanceTraveled();
 
         bool isWithinPlatform =
-            traveled >= nextStation.startDistance
-            &&
+            traveled >= nextStation.startDistance &&
             traveled <= nextStation.endDistance;
 
         if (
-            isWithinPlatform &&
-            follower.GetCurrentSpeed() <= 0.1f
-        )
-        {
-            StartCoroutine(
-                OnStationReachedSuccessfully(
-                    nextStation
-                )
-            );
-        }
-        else if (
             traveled >
             nextStation.endDistance +
             trainTolerance
@@ -90,13 +79,33 @@ public class TrainStationLogic : MonoBehaviour
             OnStationMissed(
                 nextStation
             );
+
+            return;
+        }
+
+        if (
+            isWithinPlatform &&
+            follower.GetCurrentSpeed() <= 0.1f &&
+            !boardingProcessActive
+        )
+        {
+            StartCoroutine(
+                BoardPassengersSequentially(
+                    nextStation
+                )
+            );
         }
     }
 
     private void OnStationMissed(
-        StationManager.Station station
-    )
+    StationManager.Station station
+)
     {
+        if (gameOverTriggered)
+            return;
+
+        gameOverTriggered = true;
+
         Debug.Log(
             $"Te pasaste de la estación " +
             $"{station.transform.name}"
@@ -115,11 +124,11 @@ public class TrainStationLogic : MonoBehaviour
         gameManager.GameOverMissedStation();
     }
 
-    private IEnumerator OnStationReachedSuccessfully(
-        StationManager.Station station
-    )
+    private IEnumerator BoardPassengersSequentially(
+    StationManager.Station station
+)
     {
-        processingStation = true;
+        boardingProcessActive = true;
 
         Debug.Log(
             $"Parada correcta en " +
@@ -131,35 +140,118 @@ public class TrainStationLogic : MonoBehaviour
                 station
             );
 
-        if (spawner != null)
+        if (spawner == null)
+        {
+            Debug.LogWarning(
+                $"{station.transform.name} " +
+                $"no tiene StationPassengerSpawner."
+            );
+
+            CompleteCurrentStation();
+
+            boardingProcessActive = false;
+
+            yield break;
+        }
+
+        if (passengerBoardingTarget == null)
+        {
+            Debug.LogWarning(
+                "No se asignó " +
+                "PassengerBoardingTarget."
+            );
+
+            spawner.ClearPassengersImmediate();
+
+            CompleteCurrentStation();
+
+            boardingProcessActive = false;
+
+            yield break;
+        }
+
+        while (
+            spawner.PassengerCount > 0 &&
+            !gameOverTriggered
+        )
         {
             if (
-                passengerBoardingTarget != null
+                !CanPassengersBoard(
+                    station
+                )
             )
             {
-                yield return StartCoroutine(
-                    spawner.BoardAllPassengers(
-                        passengerBoardingTarget
-                    )
-                );
+                yield return null;
+                continue;
             }
-            else
-            {
-                Debug.LogWarning(
-                    "No se asignó " +
-                    "PassengerBoardingTarget."
-                );
 
-                spawner
-                    .ClearPassengersImmediate();
+            bool passengerBoarded =
+                false;
+
+            yield return StartCoroutine(
+                spawner.BoardOnePassenger(
+                    passengerBoardingTarget,
+
+                    () =>
+                        CanPassengersBoard(
+                            station
+                        ),
+
+                    success =>
+                    {
+                        passengerBoarded =
+                            success;
+                    }
+                )
+            );
+
+            if (!passengerBoarded)
+            {
+                yield return null;
             }
         }
 
+        if (gameOverTriggered)
+        {
+            boardingProcessActive =
+                false;
+
+            yield break;
+        }
+
+        Debug.Log(
+            $"Todos los pasajeros subieron en " +
+            $"{station.transform.name}"
+        );
+
+        CompleteCurrentStation();
+
+        boardingProcessActive = false;
+    }
+
+    private bool CanPassengersBoard(
+    StationManager.Station station
+)
+    {
+        float traveled =
+            follower.GetDistanceTraveled();
+
+        bool isWithinPlatform =
+            traveled >= station.startDistance &&
+            traveled <= station.endDistance;
+
+        bool trainIsStopped =
+            follower.GetCurrentSpeed() <= 0.1f;
+
+        return
+            isWithinPlatform &&
+            trainIsStopped;
+    }
+
+    private void CompleteCurrentStation()
+    {
         currentStationIndex++;
-
         PrepareCurrentTargetStation();
-
-        processingStation = false;
     }
 
     private void PrepareCurrentTargetStation()
