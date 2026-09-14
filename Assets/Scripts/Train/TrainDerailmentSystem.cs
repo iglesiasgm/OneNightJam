@@ -7,7 +7,7 @@ public class TrainDerailmentSystem : MonoBehaviour
 {
     [Header("Referencias")]
     [SerializeField] private SplineContainer splineContainer;
-    [SerializeField] private TrainSplineFollower follower;
+    [SerializeField] private CabinFollower follower;
 
     [Header("Curvas")]
     [Tooltip("Aceleración lateral máxima tolerable antes de descarrilar (m/s²). Valores típicos de referencia: un tren real ronda 0.5-1.5 m/s² de confort, pero para gameplay podés subirlo bastante más.")]
