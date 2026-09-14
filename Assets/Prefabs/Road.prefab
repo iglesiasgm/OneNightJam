@@ -217,8 +217,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7086162202986192606}
   - component: {fileID: 542564735254271931}
-  - component: {fileID: 5955531688255620192}
   - component: {fileID: 8947956271500527395}
+  - component: {fileID: 5955531688255620192}
   m_Layer: 0
   m_Name: TrainDetectionZone
   m_TagString: Untagged
@@ -262,19 +262,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 26.470182, y: 1, z: 24.624313}
   m_Center: {x: 0.27019405, y: 0, z: 3.4675674}
---- !u!114 &5955531688255620192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3764541692006836347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 022a2131cc2d6b847afc04a2cecac3bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RoadCrossingController
-  trainTag: Train
 --- !u!54 &8947956271500527395
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -302,6 +289,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &5955531688255620192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3764541692006836347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 022a2131cc2d6b847afc04a2cecac3bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoadCrossingController
+  trainTag: Train
 --- !u!1 &3980703410928755848
 GameObject:
   m_ObjectHideFlags: 0
