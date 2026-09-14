@@ -10,6 +10,8 @@ public class TrainHUD : MonoBehaviour
     [SerializeField]
     private TrainStationLogic trainStationLogic;
 
+    [SerializeField] private GameClock gameClock;
+
     [Header("HUD Texts")]
     [SerializeField]
     private TMP_Text speedText;
@@ -23,10 +25,13 @@ public class TrainHUD : MonoBehaviour
     [SerializeField]
     private TMP_Text distanceText;
 
+    [SerializeField] private TMP_Text clockText;
+
     private void Update()
     {
         UpdateTrainData();
         UpdateStationData();
+        UpdateClockData();
     }
 
     private void UpdateTrainData()
@@ -105,6 +110,15 @@ public class TrainHUD : MonoBehaviour
             distanceText.text =
                 $"Distancia: " +
                 $"{meters} m";
+        }
+    }
+
+    private void UpdateClockData()
+    {
+        if(gameClock == null) return;
+        if(clockText != null)
+        {
+            clockText.text = gameClock.CurrentTimeText;
         }
     }
 }
