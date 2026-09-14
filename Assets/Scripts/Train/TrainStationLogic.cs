@@ -7,7 +7,7 @@ public class TrainStationLogic : MonoBehaviour
     [SerializeField] private GameManager gameManager;
 
     [Header("Train")]
-    [SerializeField] private TrainSplineFollower follower;
+    [SerializeField] private CabinFollower follower;
 
     [Header("Stations")]
     [SerializeField] private StationManager stationManager;

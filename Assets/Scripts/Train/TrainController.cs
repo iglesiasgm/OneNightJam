@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class TrainController : MonoBehaviour
 {
-    [SerializeField] private TrainSplineFollower trainSplineFollower;
+    [SerializeField] private CabinFollower trainSplineFollower;
     [SerializeField] private float accelerationRate = 5f;
     [SerializeField] private float maxSpeed = 20f;
     [SerializeField] private float minSpeed = 0f;
