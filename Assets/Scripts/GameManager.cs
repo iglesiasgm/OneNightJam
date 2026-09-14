@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [Header("Game Over Delays")]
     [SerializeField] private float missedStationDelay = 0.5f;
     [SerializeField] private float derailmentDelay = 2.5f;
+    [SerializeField] private float roadCollisionDelay = 0.3f;
 
     public GameState currentGameState { get; private set; }
 
@@ -75,6 +76,11 @@ public class GameManager : MonoBehaviour
         gameOverUI.ShowGameOver(
             delay
         );
+    }
+
+    public void GameOverRoadCollision()
+    {
+        StartGameOver(roadCollisionDelay);
     }
 
     /////////////////////////////
