@@ -371,6 +371,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5467282554036043454, guid: 6ed0be94208f98f4abcae7cf8f02aed5, type: 3}
+      propertyPath: boardingDurationPerPassenger
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 6279135388546897882, guid: 6ed0be94208f98f4abcae7cf8f02aed5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -803,6 +807,52 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1294}
   m_LocalScale: {x: 60, y: 60, z: 300}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &529128836
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 529128838}
+  - component: {fileID: 529128837}
+  m_Layer: 0
+  m_Name: TrackEventPoint_01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &529128837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 529128836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fadc3fb1926db7145849ed1ba46857f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EventSpawnPoint
+  spawnType: 0
+  spawnTransform: {fileID: 0}
+--- !u!4 &529128838
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 529128836}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.05, y: 0, z: 270.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1294,6 +1344,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5467282554036043454, guid: 6ed0be94208f98f4abcae7cf8f02aed5, type: 3}
+      propertyPath: boardingDurationPerPassenger
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 6279135388546897882, guid: 6ed0be94208f98f4abcae7cf8f02aed5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.1
@@ -1905,6 +1959,58 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!1 &1289964873
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1289964875}
+  - component: {fileID: 1289964874}
+  m_Layer: 0
+  m_Name: RandomEventManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1289964874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1289964873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57ef5738667df754e82ff145df261323, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RandomEventManager
+  trainReference: {fileID: 1487279864}
+  availableEvents:
+  - {fileID: 11400000, guid: e16d58a22d42e46418fce6e5c02fdc1d, type: 2}
+  spawnPoints:
+  - {fileID: 529128837}
+  minimumEvents: 1
+  maximumEvents: 1
+  minimumDistanceBetweenEvents: 30
+--- !u!4 &1289964875
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1289964873}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1326515427
 GameObject:
   m_ObjectHideFlags: 0
@@ -2211,6 +2317,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5467282554036043454, guid: 6ed0be94208f98f4abcae7cf8f02aed5, type: 3}
+      propertyPath: boardingDurationPerPassenger
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 6279135388546897882, guid: 6ed0be94208f98f4abcae7cf8f02aed5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3280,6 +3390,7 @@ SceneRoots:
   - {fileID: 2089871734}
   - {fileID: 1864313597}
   - {fileID: 1133162403}
+  - {fileID: 1289964875}
   - {fileID: 600241643}
   - {fileID: 922628737}
   - {fileID: 823705351}
@@ -3296,3 +3407,4 @@ SceneRoots:
   - {fileID: 1326515430}
   - {fileID: 1990171343}
   - {fileID: 1173531995}
+  - {fileID: 529128838}
