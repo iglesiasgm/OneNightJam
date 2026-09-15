@@ -9,6 +9,12 @@ public class RandomEventManager :
 
     [Header("Train")]
     [SerializeField] private Transform trainReference;
+    [SerializeField] private TrainController trainController;
+    [SerializeField] private Transform passengerBoardingTarget;
+
+    public TrainController TrainController => trainController;
+
+    public Transform PassengerBoardingTarget => passengerBoardingTarget;
 
     [Header("Events")]
     [SerializeField]
