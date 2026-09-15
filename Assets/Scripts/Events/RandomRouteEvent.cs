@@ -80,6 +80,8 @@ public abstract class RandomRouteEvent :
         State =
             RandomEventState.Succeeded;
 
+        // TODO plata gestion
+        
         Debug.Log(
             $"Evento completado: " +
             $"{definition.DisplayName}"
@@ -107,6 +109,8 @@ public abstract class RandomRouteEvent :
         State =
             RandomEventState.Failed;
 
+        // TODO plata gestion
+        
         Debug.Log(
             $"Evento fallido: " +
             $"{definition.DisplayName}"
