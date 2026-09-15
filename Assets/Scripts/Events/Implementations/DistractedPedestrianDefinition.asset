@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23eb8e6fb49c67d4f858828fd7af8a91, type: 3}
+  m_Name: DistractedPedestrianDefinition
+  m_EditorClassIdentifier: Assembly-CSharp::RandomEventDefinition
+  eventId: distracted_pedestrian
+  displayName: "Peat\xF3n distra\xEDdo"
+  eventPrefab: {fileID: 2088046499946374164, guid: 2c3456ac6ce43494ca4eecc8c535ec15, type: 3}
+  spawnType: 2
+  weight: 1
+  successReward: 2
+  failurePenalty: 10

@@ -851,7 +851,7 @@ Transform:
   m_GameObject: {fileID: 529128836}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.05, y: 0, z: 270.7}
+  m_LocalPosition: {x: 11.9, y: 0, z: 90.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1990,12 +1990,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RandomEventManager
   trainReference: {fileID: 1487279864}
   availableEvents:
+  - {fileID: 11400000, guid: c423882488f8e4f4fb66997947075120, type: 2}
   - {fileID: 11400000, guid: e16d58a22d42e46418fce6e5c02fdc1d, type: 2}
   spawnPoints:
+  - {fileID: 2049071082}
   - {fileID: 529128837}
-  minimumEvents: 1
-  maximumEvents: 1
-  minimumDistanceBetweenEvents: 30
+  minimumEvents: 2
+  maximumEvents: 2
+  minimumDistanceBetweenEvents: 5
 --- !u!4 &1289964875
 Transform:
   m_ObjectHideFlags: 0
@@ -3043,6 +3045,52 @@ MonoBehaviour:
   passengerBoardingTarget: {fileID: 1637636605}
   trainTolerance: 1
   brakingDeceleration: 1
+--- !u!1 &2049071081
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2049071083}
+  - component: {fileID: 2049071082}
+  m_Layer: 0
+  m_Name: PedestrianEventPoint_01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2049071082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2049071081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fadc3fb1926db7145849ed1ba46857f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EventSpawnPoint
+  spawnType: 2
+  spawnTransform: {fileID: 0}
+--- !u!4 &2049071083
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2049071081}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.79, y: -0, z: 65.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2057351740
 GameObject:
   m_ObjectHideFlags: 0
@@ -3408,3 +3456,4 @@ SceneRoots:
   - {fileID: 1990171343}
   - {fileID: 1173531995}
   - {fileID: 529128838}
+  - {fileID: 2049071083}
