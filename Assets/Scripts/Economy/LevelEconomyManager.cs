@@ -13,6 +13,18 @@ public class LevelEconomyManager : MonoBehaviour
     [SerializeField]
     private int ticketPrice = 2;
 
+    public int SuccessfulEvents
+    {
+        get;
+        private set;
+    }
+
+    public int FailedEvents
+    {
+        get;
+        private set;
+    }
+
     public int PassengersTransported
     {
         get;
@@ -98,6 +110,8 @@ public class LevelEconomyManager : MonoBehaviour
         if (definition == null)
             return;
 
+        SuccessfulEvents++;
+
         EventRewards +=
             definition.SuccessReward;
 
@@ -114,6 +128,8 @@ public class LevelEconomyManager : MonoBehaviour
     {
         if (definition == null)
             return;
+
+        FailedEvents++;
 
         EventPenalties +=
             definition.FailurePenalty;
