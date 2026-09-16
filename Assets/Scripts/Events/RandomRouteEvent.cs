@@ -71,7 +71,9 @@ public abstract class RandomRouteEvent :
             State ==
             RandomEventState.Succeeded ||
             State ==
-            RandomEventState.Failed
+            RandomEventState.Failed ||
+            State == 
+            RandomEventState.Cancelled
         )
         {
             return;
@@ -100,7 +102,9 @@ public abstract class RandomRouteEvent :
             State ==
             RandomEventState.Succeeded ||
             State ==
-            RandomEventState.Failed
+            RandomEventState.Failed ||
+            State == 
+            RandomEventState.Cancelled
         )
         {
             return;
@@ -121,6 +125,32 @@ public abstract class RandomRouteEvent :
         );
 
         OnFailed();
+    }
+
+    protected void CancelEvent()
+    {
+        if (
+            State == RandomEventState.Succeeded ||
+            State == RandomEventState.Failed ||
+            State == RandomEventState.Cancelled
+        )
+        {
+            return;
+        }
+
+        State =
+            RandomEventState.Cancelled;
+
+        Debug.Log(
+            $"Evento cancelado sin penalización: " +
+            $"{definition.DisplayName}"
+        );
+
+        OnCancelled();
+    }
+
+    protected virtual void OnCancelled()
+    {
     }
 
     protected virtual void OnSucceeded()

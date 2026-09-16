@@ -37,6 +37,14 @@ public class TrainStationLogic : MonoBehaviour
 
     public event Action<int, int> OnStationPassengerExchangeCompleted;
 
+    public int CurrentStationIndex =>
+    currentStationIndex;
+
+    public int StationCount =>
+        stationManager != null
+            ? stationManager.Stations.Count
+            : 0;
+
     private void Start()
     {
         PrepareCurrentTargetStation();

@@ -11,5 +11,6 @@ public enum RandomEventState
     Prepared,
     Active,
     Succeeded,
-    Failed
+    Failed,
+    Cancelled
 }

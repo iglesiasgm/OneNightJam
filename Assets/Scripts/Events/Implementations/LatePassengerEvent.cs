@@ -193,16 +193,34 @@ public class LatePassengerEvent : RandomRouteEvent
         }
 
         if (
-            trainHasEnteredStation &&
-            !trainInsideStation
-        )
+    trainHasEnteredStation &&
+    !trainInsideStation
+)
         {
-            Debug.Log(
-                "El tren se fue sin esperar " +
-                "al pasajero retrasado."
-            );
+            TrainPassengerManager passengerManager =
+                eventManager.TrainPassengerManager;
 
-            FailEvent();
+            if (
+                passengerManager != null &&
+                passengerManager.IsFull
+            )
+            {
+                Debug.Log(
+                    "El pasajero retrasado no pudo subir: " +
+                    "el tranvía estaba lleno."
+                );
+
+                CancelEvent();
+            }
+            else
+            {
+                Debug.Log(
+                    "El tren se fue sin esperar " +
+                    "al pasajero retrasado."
+                );
+
+                FailEvent();
+            }
         }
     }
 
@@ -264,6 +282,23 @@ public class LatePassengerEvent : RandomRouteEvent
     {
         if (boardingInProgress)
             return;
+
+        TrainPassengerManager passengerManager =
+    eventManager.TrainPassengerManager;
+
+        if (
+            passengerManager != null &&
+            passengerManager.IsFull
+        )
+        {
+            Debug.Log(
+                "Pasajero retrasado cancelado: " +
+                "el tranvía está lleno."
+            );
+
+            CancelEvent();
+            return;
+        }
 
         if (!IsTrainInsideStation())
             return;
@@ -382,6 +417,37 @@ public class LatePassengerEvent : RandomRouteEvent
 
         boardingInProgress = false;
 
+        TrainPassengerManager passengerManager =
+    eventManager.TrainPassengerManager;
+
+        TrainStationLogic stationLogic =
+            eventManager.TrainStationLogic;
+
+        if (
+            passengerManager == null ||
+            stationLogic == null
+        )
+        {
+            Debug.LogWarning(
+                "No se pudo registrar al pasajero retrasado."
+            );
+
+            FailEvent();
+            yield break;
+        }
+
+        bool boarded =
+            passengerManager.TryBoardPassenger(
+                stationLogic.CurrentStationIndex,
+                stationLogic.StationCount
+            );
+
+        if (!boarded)
+        {
+            CancelEvent();
+            yield break;
+        }
+
         CompleteEvent();
     }
 
@@ -464,6 +530,16 @@ public class LatePassengerEvent : RandomRouteEvent
     }
 
     protected override void OnFailed()
+    {
+        ReleaseSpawnPoint();
+
+        Destroy(
+            gameObject,
+            failureDestroyDelay
+        );
+    }
+
+    protected override void OnCancelled()
     {
         ReleaseSpawnPoint();
 

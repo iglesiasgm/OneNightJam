@@ -10,11 +10,22 @@ public class RandomEventManager :
     [Header("Train")]
     [SerializeField] private Transform trainReference;
     [SerializeField] private TrainController trainController;
+    [SerializeField] private TrainPassengerManager trainPassengerManager;
+    [SerializeField] private TrainStationLogic trainStationLogic;
     [SerializeField] private Transform passengerBoardingTarget;
 
     public TrainController TrainController => trainController;
 
     public Transform PassengerBoardingTarget => passengerBoardingTarget;
+
+
+    public TrainPassengerManager TrainPassengerManager =>
+        trainPassengerManager;
+
+    public TrainStationLogic TrainStationLogic =>
+        trainStationLogic;
+
+
 
     [Header("Events")]
     [SerializeField]
@@ -51,6 +62,7 @@ public class RandomEventManager :
     private readonly List<EventSpawnPoint>
         usedSpawnPoints =
             new List<EventSpawnPoint>();
+
 
     private void Start()
     {
