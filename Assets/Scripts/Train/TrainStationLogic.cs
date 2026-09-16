@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using System;
 
 public class TrainStationLogic : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class TrainStationLogic : MonoBehaviour
 
     [Header("Passengers")]
     [SerializeField] private GameClock gameClock;
+
+    [Header("Passenger Capacity")]
+    [SerializeField] private TrainPassengerManager trainPassengerManager;
 
     [SerializeField]
     private Transform passengerBoardingTarget;
@@ -30,6 +34,8 @@ public class TrainStationLogic : MonoBehaviour
 
     private bool boardingProcessActive = false;
     private bool gameOverTriggered = false;
+
+    public event Action<int, int> OnStationPassengerExchangeCompleted;
 
     private void Start()
     {
@@ -135,6 +141,27 @@ public class TrainStationLogic : MonoBehaviour
             $"{station.transform.name}"
         );
 
+        int passengersLeaving = 0;
+
+        if (trainPassengerManager != null)
+        {
+            passengersLeaving =
+                trainPassengerManager
+                    .DisembarkPassengers(
+                        currentStationIndex
+                    );
+        }
+
+        int passengersBoarded = 0;
+
+        if (passengersLeaving > 0)
+        {
+            Debug.Log(
+                $"Bajaron {passengersLeaving} pasajeros " +
+                $"en {station.transform.name}."
+            );
+        }
+
         StationPassengerSpawner spawner =
             GetSpawnerForStation(
                 station
@@ -175,6 +202,23 @@ public class TrainStationLogic : MonoBehaviour
             !gameOverTriggered
         )
         {
+
+            if (
+    trainPassengerManager != null &&
+    trainPassengerManager.IsFull
+)
+            {
+                Debug.Log(
+                    $"Tren lleno. " +
+                    $"{spawner.PassengerCount} pasajeros " +
+                    $"quedaron en la estación."
+                );
+
+                spawner.ClearPassengersImmediate();
+
+                break;
+            }
+
             if (
                 !CanPassengersBoard(
                     station
@@ -205,7 +249,24 @@ public class TrainStationLogic : MonoBehaviour
                 )
             );
 
-            if (!passengerBoarded)
+            if (passengerBoarded)
+            {
+                if (trainPassengerManager != null)
+                {
+                    bool registered =
+                        trainPassengerManager
+                            .TryBoardPassenger(
+                                currentStationIndex,
+                                stationManager.Stations.Count
+                            );
+
+                    if (registered)
+                    {
+                        passengersBoarded++;
+                    }
+                }
+            }
+            else
             {
                 yield return null;
             }
@@ -223,6 +284,8 @@ public class TrainStationLogic : MonoBehaviour
             $"Todos los pasajeros subieron en " +
             $"{station.transform.name}"
         );
+
+        OnStationPassengerExchangeCompleted?.Invoke(passengersLeaving, passengersBoarded);
 
         CompleteCurrentStation();
 
